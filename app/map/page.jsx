@@ -1,15 +1,26 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { MapContainer, TileLayer } from "react-leaflet";
+import dynamic from "next/dynamic";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { GoChevronLeft } from "react-icons/go";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import Link from "next/link";
 
+const MapContainer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.MapContainer),
+  { ssr: false }
+);
+const TileLayer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.TileLayer),
+  { ssr: false }
+);
+
 const map = () => {
   const [location, setLocation] = useState(null);
+  const [layer, setLayer] = useState("Clouds");
+  const mapRef = useRef();
 
   useEffect(() => {
     getLoadLocation();
@@ -24,8 +35,6 @@ const map = () => {
       resp_loc.data.location.longitude,
     ]);
   };
-
-  const mapRef = useRef();
 
   const layers = [
     {
@@ -69,10 +78,6 @@ const map = () => {
       id: "pressure_new",
     },
   ];
-
-  const [layer, setLayer] = useState("Clouds");
-
-  console.log(layers.find((e) => e.name == layer));
 
   return (
     <div className="relative w-screen h-screen text-white">
