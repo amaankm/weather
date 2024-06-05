@@ -2,12 +2,12 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import dynamic from "next/dynamic";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
 import { GoChevronLeft } from "react-icons/go";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import Link from "next/link";
+import "leaflet/dist/leaflet.css";
 
+// Dynamically import the MapContainer and TileLayer to avoid SSR
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
   { ssr: false }
@@ -17,24 +17,24 @@ const TileLayer = dynamic(
   { ssr: false }
 );
 
-const map = () => {
+const MapPage = () => {
   const [location, setLocation] = useState(null);
-  const [layer, setLayer] = useState("Clouds");
   const mapRef = useRef();
+  const [layer, setLayer] = useState("Clouds");
 
   useEffect(() => {
+    const getLoadLocation = async () => {
+      const url_loc = `https://api.geoapify.com/v1/ipinfo?apiKey=${process.env.NEXT_PUBLIC_LOCATION_KEY}`;
+      const resp_loc = await axios.get(url_loc);
+      console.log(resp_loc.data.location);
+      setLocation([
+        resp_loc.data.location.latitude,
+        resp_loc.data.location.longitude,
+      ]);
+    };
+
     getLoadLocation();
   }, []);
-
-  const getLoadLocation = async () => {
-    const url_loc = `https://api.geoapify.com/v1/ipinfo?apiKey=${process.env.NEXT_PUBLIC_LOCATION_KEY}`;
-    const resp_loc = await axios.get(url_loc);
-    console.log(resp_loc.data.location);
-    setLocation([
-      resp_loc.data.location.latitude,
-      resp_loc.data.location.longitude,
-    ]);
-  };
 
   const layers = [
     {
@@ -110,6 +110,7 @@ const map = () => {
       <div className="absolute z-20 right-5 top-5 p-2 gap-1 flex flex-col rounded-2xl bg-black/50 backdrop-blur text-md font-extralight outline-1 outline outline-neutral-500">
         {layers.map((l) => (
           <div
+            key={l.name}
             className={`px-3 w-full py-1 hover:bg-neutral-400/20 rounded-full cursor-pointer  ${
               layer == l.name && "bg-neutral-400/40"
             }`}
@@ -125,8 +126,8 @@ const map = () => {
           <div className="w-full flex justify-between text-xs p-1">
             {layers
               .find((e) => e.name == layer)
-              .scale.map((s) => (
-                <div>{s}</div>
+              .scale.map((s, index) => (
+                <div key={index}>{s}</div>
               ))}
           </div>
         </div>
@@ -149,7 +150,7 @@ const map = () => {
             (l) =>
               layer == l.name && (
                 <TileLayer
-                  leaflet={L}
+                  key={l.id}
                   url={`https://tile.openweathermap.org/map/${l.id}/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}`}
                   attribution='<a href="https://openweathermap.org/" target="_blank">&copy; OpenWeather</a>'
                   className={l.layerClass}
@@ -162,4 +163,4 @@ const map = () => {
   );
 };
 
-export default map;
+export default MapPage;
