@@ -33,7 +33,7 @@ export default function Home() {
   };
 
   const handleSearch = async (searchTerm) => {
-    const url_latlon = `http://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&limit=${5}&appid=${
+    const url_latlon = `https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&limit=${5}&appid=${
       process.env.NEXT_PUBLIC_WEATHER_KEY
     }`;
     const resp_latlon = await axios.get(url_latlon);

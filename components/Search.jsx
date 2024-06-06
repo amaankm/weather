@@ -34,12 +34,12 @@ const Search = ({ onSearch, onSelect }) => {
       </form>
       <GoSearch size={28} onClick={handleSearch} />
       {searchResults.length > 0 && (
-        <div className="w-72 absolute z-30 top-12 -mx-2 px-5 rounded-3xl p-2 backdrop-blur-lg bg-white/5 shadow-lg border-2 border-black">
+        <div className="w-72 absolute z-30 top-12 -mx-2 px-5 rounded-3xl p-2 backdrop-blur-lg bg-white/10 shadow-lg border-2 border-black">
           <ul>
             {searchResults.map((result, index) => (
               <li
                 key={index}
-                className="cursor-pointer hover:bg-white/10 p-3 hover:outline outline-1 outline-black rounded-full"
+                className="cursor-pointer p-3 hover:outline outline-1 outline-black rounded-full"
                 onClick={() => handleResultClick(result)}
               >
                 {result.name}, {result.state}, {result.country}
