@@ -5,24 +5,20 @@ import { ResponsiveContainer, LineChart, Line, Tooltip } from "recharts";
 const Today = (props) => {
   const forecast = props.props;
 
-  console.log(forecast);
-
   const filteredList = forecast.list.filter((item, index) => index < 6);
 
   const tempList = filteredList.map((el) => ({
     temp: Math.round(el.main.temp),
   }));
 
-  console.log(tempList, filteredList);
-
   return (
-    <div className="w-full basis-5/9 p-5 gap-2 xl:gap-28 backdrop-blur-lg bg-white/5 shadow-lg border-2 border-black flex flex-col justify-between items-center">
+    <div className="w-full basis-5/9 p-5 gap-2 lg:gap-32 backdrop-blur-lg bg-white/5 shadow-lg border-2 border-black flex flex-col justify-between items-center">
       <p className="font-extralight mb-1">Today's Weather</p>
       {tempList && (
         <ResponsiveContainer
           height={280}
           width="95%"
-          className="hidden xl:block absolute z-0 top-5"
+          className="hidden lg:block absolute z-0 top-5"
         >
           <LineChart
             data={filteredList}
@@ -42,7 +38,7 @@ const Today = (props) => {
         <div className="w-full flex flex-row space-x-5 overflow-x-auto xl:justify-around">
           {filteredList.map((item, index) => {
             const date = new Date(item.dt * 1000);
-            console.log(date);
+            // console.log(date);
             const time = date.toLocaleString("en-US", {
               hour: "numeric",
               hour12: true,

@@ -7,7 +7,7 @@ import Weather from "@/components/Weather";
 import Forecast from "@/components/Forecast";
 import Today from "@/components/Today";
 import Conditions from "@/components/Conditions";
-import { CiBrightnessUp, CiDark, CiMap } from "react-icons/ci";
+import { CiBrightnessUp, CiDark, CiLocationOn, CiMap } from "react-icons/ci";
 import Link from "next/link";
 import { PuffLoader } from "react-spinners";
 
@@ -25,7 +25,7 @@ export default function Home() {
   const getLoadLocation = async () => {
     const url_loc = `https://api.geoapify.com/v1/ipinfo?apiKey=${process.env.NEXT_PUBLIC_LOCATION_KEY}`;
     const resp_loc = await axios.get(url_loc);
-    console.log(resp_loc.data.location);
+    // console.log(resp_loc.data.location);
     fetchWeather(
       resp_loc.data.location.latitude,
       resp_loc.data.location.longitude
@@ -42,7 +42,7 @@ export default function Home() {
 
   const handleResultClick = (result) => {
     fetchWeather(result.lat, result.lon);
-    console.log(result); // Example: Log the selected result
+    // console.log(result); // Example: Log the selected result
   };
 
   const fetchWeather = async (lat, lon) => {
@@ -53,20 +53,20 @@ export default function Home() {
       const forecast_url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}&units=metric`;
       const forecast_resp = await axios.get(forecast_url);
       const aqi_url = `https://api.api-ninjas.com/v1/airquality?lat=${lat}&lon=${lon}`;
-      console.log(weather_url);
+      // console.log(weather_url);
       const config = {
         headers: {
           "X-Api-Key": process.env.NEXT_PUBLIC_X_KEY,
         },
       };
       const aqi_resp = await axios.get(aqi_url, config);
-      console.log(aqi_resp.data);
+      // console.log(aqi_resp.data);
       setWeatherData({
         weather: weather_resp.data,
         aqi: aqi_resp.data,
         forecast: forecast_resp.data,
       });
-      console.log(forecast_resp.data);
+      // console.log(forecast_resp.data);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -90,6 +90,12 @@ export default function Home() {
           <div className="w-full sm:w-4/5 flex flex-row justify-between">
             <Search onSearch={handleSearch} onSelect={handleResultClick} />
             <div className="flex gap-3">
+              <div
+                className="w-10 h-10 p-1 rounded-full backdrop-blur-sm bg-white/5 hover:bg-white/10 shadow-lg border-2 border-black"
+                onClick={getLoadLocation}
+              >
+                <CiLocationOn size={28} />
+              </div>
               <div
                 onClick={() => setDark(!dark)}
                 className="w-10 h-10 p-1 rounded-full backdrop-blur-sm bg-white/5 hover:bg-white/10 shadow-lg border-2 border-black"

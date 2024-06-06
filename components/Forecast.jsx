@@ -3,7 +3,7 @@ import Image from "next/image";
 const Forecast = (props) => {
   const forecast = props.props;
 
-  console.log(forecast);
+  //   console.log(forecast);
 
   const filteredList = forecast.list.filter(
     (item, index) => index >= 7 && (index + 1) % 8 === 0
@@ -25,6 +25,8 @@ const Forecast = (props) => {
               className="w-10 h-full invert"
               src={`weather_icons/${item.weather[0].icon}.svg`}
               alt=""
+              width={30}
+              height={30}
             />
             <div>{Math.round(item.main.temp)}°ᶜ</div>
             <div className="m-auto mr-0">{formattedDate}</div>

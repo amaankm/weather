@@ -3,8 +3,6 @@ import Image from "next/image";
 const Weather = (props) => {
   const weatherData = props.props;
 
-  console.log(weatherData);
-
   const date = new Date((weatherData.dt + weatherData.timezone) * 1000);
   const options = { weekday: "short", day: "numeric", month: "short" };
   const formattedDate = date.toLocaleString("en-US", options);
@@ -23,6 +21,8 @@ const Weather = (props) => {
             className="w-20 h-full invert"
             src={`weather_icons/${weatherData.weather[0].icon}.svg`}
             alt=""
+            width={30}
+            height={30}
           />
           <div className="text-xs">
             {weatherData.weather[0].description.toUpperCase()}
