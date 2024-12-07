@@ -81,16 +81,16 @@ const MapPage = () => {
 
   return (
     <div className="relative w-screen h-screen text-white">
-      <div className="absolute z-20 left-5 top-5 flex flex-col gap-2">
+      <div className="absolute z-20 flex flex-col gap-2 left-5 top-5">
         <Link
           href="/"
-          className="rounded-full bg-black/50 backdrop-blur text-lg w-10 h-10 flex items-center justify-center overflow-hidden outline-1 outline outline-neutral-500"
+          className="flex items-center justify-center w-10 h-10 overflow-hidden text-lg rounded-full bg-black/50 backdrop-blur outline-1 outline outline-neutral-500"
         >
           <GoChevronLeft size={28} />
         </Link>
-        <div className="flex flex-col rounded-full bg-black/50 backdrop-blur text-lg items-center w-10 overflow-hidden outline-1 outline outline-neutral-500">
+        <div className="flex flex-col items-center w-10 overflow-hidden text-lg rounded-full bg-black/50 backdrop-blur outline-1 outline outline-neutral-500">
           <div
-            className="p-3 hover:bg-neutral-400/20 rounded-full"
+            className="p-3 rounded-full hover:bg-neutral-400/20"
             onClick={() => {
               mapRef.current.zoomIn();
             }}
@@ -98,7 +98,7 @@ const MapPage = () => {
             <AiOutlinePlus />
           </div>
           <div
-            className="p-3 hover:bg-neutral-400/20 rounded-full"
+            className="p-3 rounded-full hover:bg-neutral-400/20"
             onClick={() => {
               mapRef.current.zoomOut();
             }}
@@ -107,7 +107,7 @@ const MapPage = () => {
           </div>
         </div>
       </div>
-      <div className="absolute z-20 right-5 top-5 p-2 gap-1 flex flex-col rounded-2xl bg-black/50 backdrop-blur text-md font-extralight outline-1 outline outline-neutral-500">
+      <div className="absolute z-20 flex flex-col gap-1 p-2 right-5 top-5 rounded-2xl bg-black/50 backdrop-blur text-md font-extralight outline-1 outline outline-neutral-500">
         {layers.map((l) => (
           <div
             key={l.name}
@@ -120,10 +120,10 @@ const MapPage = () => {
           </div>
         ))}
       </div>
-      <div className="absolute bottom-5 z-20 w-screen p-5">
-        <div className="w-full sm:w-72 sm:left-5 p-2 gap-1 flex flex-col rounded-2xl bg-black/50 backdrop-blur text-md font-extralight outline-1 outline outline-neutral-500">
+      <div className="absolute z-20 w-screen p-5 bottom-5">
+        <div className="flex flex-col w-full gap-1 p-2 sm:w-72 sm:left-5 rounded-2xl bg-black/50 backdrop-blur text-md font-extralight outline-1 outline outline-neutral-500">
           <div className={layers.find((e) => e.name == layer).scaleClass}></div>
-          <div className="w-full flex justify-between text-xs p-1">
+          <div className="flex justify-between w-full p-1 text-xs">
             {layers
               .find((e) => e.name == layer)
               .scale.map((s, index) => (
@@ -142,7 +142,7 @@ const MapPage = () => {
           className="absolute z-10 w-full h-full"
         >
           <TileLayer
-            url="https://api.maptiler.com/maps/openstreetmap/{z}/{x}/{y}.jpg?key=etpr94eY6NQFt3OKvQO2"
+            url={`https://api.maptiler.com/maps/openstreetmap/{z}/{x}/{y}.jpg?key=${process.env.NEXT_PUBLIC_TILER_KEY}`}
             attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
             className="invert grayscale"
           />
